@@ -12,7 +12,7 @@
     "url": "git+https://github.com/Only-Facts/EpyTodo.git"
   },
   "keywords": [],
-  "author": "",
+  "author": ["YetAnotherMechanicusEnjoyer", "raxfacts"],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Only-Facts/EpyTodo/issues"
@@ -22,7 +22,6 @@
     "body-parser": "^2.2.0",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
-    "mysql": "^2.18.1",
     "mysql2": "^3.14.1"
   }
 }
