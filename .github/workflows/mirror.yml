@@ -1,5 +1,4 @@
-name: Chocolatine Checker
-run-name: ${{ github.actor }}'s push checker
+name: Mirror Push
 on: 
   push:
     branches-ignore:
@@ -29,8 +28,8 @@ jobs:
 
   push_to_mirror:
     runs-on: ubuntu-latest
-    needs: run_tests
-    if: ${{ github.event_name == 'push' && success() }}
+    needs: check_repository
+    if: ${{ needs.outputs.check_repository.same_repo == 'false' && github.event_name == 'push' && success() }}
     steps:
       - uses: actions/checkout@v4
         with:
