@@ -42,7 +42,7 @@ app.use('/user', user);
 app.use('/users', users);
 app.use('/todos', todos);
 
-app.use((err, _, res, _) => {
+app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ "msg": "Internal server error" });
 })
