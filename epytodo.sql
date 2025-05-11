@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS todo (
     description varchar(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     due_time TIMESTAMP NOT NULL,
-    user_id INTEGER UNSIGNED,
-    status varchar(255) DEFAULT 'not started',
-    FOREIGN KEY (user_id) REFERENCES user(id)
+    user_id INTEGER UNSIGNED NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(id),
+    status varchar(255) DEFAULT 'not started'
 );

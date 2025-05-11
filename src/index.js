@@ -10,11 +10,7 @@ require('dotenv').config();
 const IP = process.env.MYSQL_HOST
 const PORT = process.env.PORT || 8080;
 
-const {
-    getUsers,
-    getUser,
-    addUser
-} = require('./config/db.mjs');
+const { addUser } = require('./config/db.mjs');
 
 app.get('/', (req, res) => {
     res.status(200).send({
@@ -28,7 +24,11 @@ app.post('/register', async (req, res) => {
         const user = await addUser(email, password, name, firstname)
         res.status(201).send({ "token": "Token of the newly registered user" })
     } catch (error) {
-        res.status(200).send({ "msg": "Account already exists" })
+        console.error(`${error}`);
+        if (error == `Error: Duplicate entry '${email}' for key 'email'`)
+            res.status(200).send({ "msg": "Account already exists" });
+        else
+            res.status(400).json({ "msg": "Bad parameter" })
     }
 });
 
@@ -43,8 +43,8 @@ app.use('/users', users);
 app.use('/todos', todos);
 
 app.use((err, req, res, next) => {
-    console.error(err.stack)
-    res.status(500).send('Something broke!')
+    console.error(err.stack);
+    res.status(500).json({ "msg": "Internal server error" });
 })
 
 app.listen(PORT, () => {

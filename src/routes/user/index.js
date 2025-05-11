@@ -1,17 +1,18 @@
 const express = require('express');
 const router = express.Router();
 
-const { getUsers } = require('../../config/db.mjs');
+const { getUsers, getTodos } = require('../../config/db.mjs');
 
 router.get('/', async (req, res) => {
-    const users = await getUsers()
-    res.status(200).json(users)
+    const users = await getUsers();
+    
+    res.status(200).json(users);
 });
 
-router.get('/todos', (req, res) => {
-    res.status(200).json({
-        message: 'view all user tasks',
-    });
+router.get('/todos', async (req, res) => {
+    const tables = await getTodos();
+
+    res.status(200).json(tables);
 });
 
 module.exports = router;
