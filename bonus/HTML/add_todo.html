@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Todo - EpyTodo</title>
+    <link rel="stylesheet" href="../CSS/register.css">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Add Todo</h2>
+      <div class="boxes">
+        <form id="register-form" action="#" method="post">
+            <div class="box">
+              <input type="text" name="title" placeholder="Title" required>
+            </div>
+            <div class="box">
+            <input type="text" name="description" placeholder="Description" required>
+            </div>
+            <div class="box">
+            <input type="date" name="due_time" placeholder="Due Time" required>
+            </div>
+            <i>Optional :</i>
+            <div class="box">
+            <input type="text" name="status" placeholder="not started">
+            </div>
+            <button type="submit">Add</button>
+            </div>
+
+        </form>
+        <div class="back-link">
+            <a href="todo.html">← Back to todo page</a>
+        </div>
+      </div>
+    </div>
+<script>
+document.getElementById('register-form').addEventListener('submit', async function(event) {
+  event.preventDefault();
+
+  function parseJwt(token) {
+    try {
+      const baseurl = token.split('.')[1];
+      const base64 = baseurl.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64).split('').map(c =>
+          '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+        ).join('')
+      );
+      return JSON.parse(jsonPayload);
+    } catch (e) {
+      console.error("Token invalide :", e);
+      return null;
+    }
+  }
+
+  const token = sessionStorage.getItem('jwt');
+  const payload = parseJwt(token);
+  if (!payload || !payload.id) {
+    console.error("Token invalide");
+  }
+
+
+  const formData = {
+    title: document.querySelector('input[name="title"]').value,
+    description: document.querySelector('input[name="description"]').value,
+    due_time: document.querySelector('input[name="due_time"]').value + ' 00:00:00',
+    user_id: payload.id,
+    status: document.querySelector('input[name="status"]').value
+  };
+
+  try {
+    const response = await fetch('http://localhost:8080/todos', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify(formData)
+    });
+
+    if (!response.ok) {
+      throw new Error('Échec de la connexion');
+    }
+
+    const data = await response.json();
+
+    window.location.href = 'todo.html';
+
+  } catch (error) {
+    console.error('Erreur:', error);
+    alert('Connexion échouée.');
+  }
+});
+</script>
+</body>
+</html>
