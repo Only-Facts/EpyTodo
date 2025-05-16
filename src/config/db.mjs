@@ -63,6 +63,16 @@ export async function getTodo(id) {
   return rows[0]
 }
 
+export async function getUserTodo(id) {
+  console.log(id);
+  const [rows] = await pool.query(`
+      SELECT *
+      FROM todo
+      WHERE user_id = ?
+  `, [id]);
+  return rows;
+}
+
 export async function addUser(email, password, name, firstname) {
   const hashed_pass = await hash(password);
   const [rows] = await pool.query(`
@@ -89,6 +99,24 @@ export async function addTodo(title, description, due_time, user_id, status) {
         `, [title, description, due_time, user_id, status]);
   }
   return getTodo(rows.insertId);
+}
+
+export async function updateUser(id, email, password, name, firstname) {
+  const [rows] = await pool.query(`
+    UPDATE \`user\`
+    SET email = ?, password = ?, firstname = ?, name = ?
+    WHERE id = ?
+  `, [email, password, firstname, name, id]);
+  return rows[0];
+}
+
+export async function updateTodo(id, title, description, due_time, user_id, status) {
+  const [rows] = await pool.query(`
+    UPDATE \`todo\`
+    SET title = ?, description = ?, due_time = ?, user_id = ?, status = ?
+    WHERE id = ?
+  `, [title, description, due_time, user_id, status, id]);
+  return rows[0];
 }
 
 export async function deleteUser(id) {

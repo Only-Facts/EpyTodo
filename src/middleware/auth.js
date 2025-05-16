@@ -8,6 +8,7 @@ module.exports = (req, res, next) => {
       if (err) {
         return res.status(401).json({ "msg": "Token is not valid" });
       }
+      req.user = user.email;
       next();
     });
   } else {
