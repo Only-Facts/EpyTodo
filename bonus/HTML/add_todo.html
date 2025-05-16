@@ -48,15 +48,21 @@ document.getElementById('register-form').addEventListener('submit', async functi
       );
       return JSON.parse(jsonPayload);
     } catch (e) {
-      console.error("Token invalide :", e);
+      console.error("Invalid Token :", e);
       return null;
     }
   }
 
   const token = sessionStorage.getItem('jwt');
+
+  if (!token) {
+    alert("No Token Found. You may login first.");
+    window.location.href = "login.html";
+  }
+
   const payload = parseJwt(token);
   if (!payload || !payload.id) {
-    console.error("Token invalide");
+    console.error("Invalid Token");
   }
 
 
@@ -79,7 +85,7 @@ document.getElementById('register-form').addEventListener('submit', async functi
     });
 
     if (!response.ok) {
-      throw new Error('Échec de la connexion');
+      throw new Error('Connexion Failed');
     }
 
     const data = await response.json();
@@ -88,7 +94,7 @@ document.getElementById('register-form').addEventListener('submit', async functi
 
   } catch (error) {
     console.error('Erreur:', error);
-    alert('Connexion échouée.');
+    alert('Connexion Failed.');
   }
 });
 </script>

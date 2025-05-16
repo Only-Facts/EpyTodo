@@ -49,7 +49,7 @@ document.getElementById('login-form').addEventListener('submit', async function(
     if (!response.ok) {
       console.error('Code HTTP :', response.status);
       console.error('Response :', responseText);
-      throw new Error('Échec de la connexion');
+      throw new Error('Connexion Failed');
     }
 
     const data = JSON.parse(responseText);
@@ -61,7 +61,7 @@ document.getElementById('login-form').addEventListener('submit', async function(
 
   } catch (error) {
     console.error('Erreur:', error);
-    alert('Connexion échouée.');
+    alert('Connexion Failed.');
   }
 });
 </script>

@@ -42,7 +42,7 @@
         const token = sessionStorage.getItem('jwt');
 
         if (!token) {
-          alert("Aucun token trouvé. Merci de vous connecter.");
+          alert("No Token Found. You may login first.");
           window.location.href = "login.html";
         }
         const response = await fetch('http://localhost:8080/user/todos', {
@@ -53,7 +53,7 @@
         });
 
         if (!response.ok) {
-          throw new Error('Erreur HTTP: ' + response.status);
+          throw new Error('HTTP Error: ' + response.status);
         }
 
         const todos = await response.json();
@@ -72,7 +72,7 @@
           tbody.appendChild(row);
         });
       } catch (err) {
-        console.error('Erreur lors du chargement des todos :', err);
+        console.error('Error while loading todos :', err);
         document.body.innerHTML += `<p style="color:red;">Erreur : ${err.message}</p>`;
       }
     }
