@@ -3,20 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion - EpyTodo</title>
+    <title>Login - EpyTodo</title>
     <link rel="stylesheet" href="../CSS/register.css">
 </head>
 <body>
     <div class="form-container">
-        <h2>Connexion</h2>
+        <h2>Register</h2>
+      <div class="boxes">
         <form action="#" method="post">
-            <input type="email" name="email" placeholder="Adresse e-mail" required>
-            <input type="password" name="motdepasse" placeholder="Mot de passe" required>
-            <button type="submit">Se connecter</button>
+            <div class="box">
+              <input type="email" name="email" placeholder="E-mail" required>
+            </div>
+            <div class="box">
+            <input type="password" name="password" placeholder="Password" required>
+            </div>
+            <div class="box">
+            <input type="name" name="name" placeholder="First name" required>
+            </div>
+            <div class="box">
+            <input type="last name" name=" last name" placeholder="Last name" required>
+            </div>
+            <button type="submit">Register</button>
+            </div>
+
         </form>
         <div class="back-link">
-            <a href="index.html">← Retour à l'accueil</a>
+            <a href="index.html">← Back to home page</a>
         </div>
+      </div>
     </div>
 </body>
 </html>
