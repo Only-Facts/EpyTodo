@@ -64,7 +64,6 @@ export async function getTodo(id) {
 }
 
 export async function getUserTodo(id) {
-  console.log(id);
   const [rows] = await pool.query(`
       SELECT *
       FROM todo

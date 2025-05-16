@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - EpyTodo</title>
+    <title>Register - EpyTodo</title>
     <link rel="stylesheet" href="../CSS/register.css">
 </head>
 <body>
     <div class="form-container">
         <h2>Register</h2>
       <div class="boxes">
-        <form action="#" method="post">
+        <form id="register-form" action="#" method="post">
             <div class="box">
               <input type="email" name="email" placeholder="E-mail" required>
             </div>
@@ -18,10 +18,10 @@
             <input type="password" name="password" placeholder="Password" required>
             </div>
             <div class="box">
-            <input type="name" name="name" placeholder="First name" required>
+            <input type="name" name="firstname" placeholder="First name" required>
             </div>
             <div class="box">
-            <input type="last name" name=" last name" placeholder="Last name" required>
+            <input type="last name" name="name" placeholder="Last name" required>
             </div>
             <button type="submit">Register</button>
             </div>
@@ -32,6 +32,43 @@
         </div>
       </div>
     </div>
+<script>
+document.getElementById('register-form').addEventListener('submit', async function(event) {
+  event.preventDefault();
+
+  const formData = {
+    email: document.querySelector('input[name="email"]').value,
+    password: document.querySelector('input[name="password"]').value,
+    firstname: document.querySelector('input[name="firstname"]').value,
+    name: document.querySelector('input[name="name"]').value
+  };
+
+  try {
+    const response = await fetch('http://localhost:8080/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    });
+
+    if (!response.ok) {
+      throw new Error('Échec de la connexion');
+    }
+
+    const data = await response.json();
+    const token = data.token;
+
+    sessionStorage.setItem('jwt', token);
+
+    window.location.href = 'todo.html';
+
+  } catch (error) {
+    console.error('Erreur:', error);
+    alert('Connexion échouée.');
+  }
+});
+</script>
 </body>
 </html>
 

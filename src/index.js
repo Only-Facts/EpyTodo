@@ -4,8 +4,10 @@ const users = require('./routes/users');
 const todos = require('./routes/todos');
 
 const express = require('express');
+const cors = require('cors');
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 require('dotenv').config();
 const IP = process.env.MYSQL_HOST

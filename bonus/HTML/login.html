@@ -10,7 +10,7 @@
     <div class="form-container">
         <h2>Login</h2>
       <div class="boxes">
-        <form action="#" method="post">
+        <form id="login-form" action="#" method="post">
             <div class="box">
               <input type="email" name="email" placeholder="E-mail" required>
             </div>
@@ -26,6 +26,45 @@
         </div>
       </div>
     </div>
+<script>
+document.getElementById('login-form').addEventListener('submit', async function(event) {
+  event.preventDefault();
+
+  const formData = {
+    email: document.querySelector('input[name="email"]').value,
+    password: document.querySelector('input[name="password"]').value,
+  };
+
+  try {
+    const response = await fetch('http://localhost:8080/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    });
+
+    const responseText = await response.text();
+
+    if (!response.ok) {
+      console.error('Code HTTP :', response.status);
+      console.error('Response :', responseText);
+      throw new Error('Échec de la connexion');
+    }
+
+    const data = JSON.parse(responseText);
+    const token = data.token;
+
+    sessionStorage.setItem('jwt', token);
+
+    window.location.href = 'todo.html';
+
+  } catch (error) {
+    console.error('Erreur:', error);
+    alert('Connexion échouée.');
+  }
+});
+</script>
 </body>
 </html>
 
