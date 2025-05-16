@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../../middleware/auth.js');
+const check_id = require('../../middleware/notFound.js');
 
 const {
   getTodos,
@@ -8,13 +10,13 @@ const {
   deleteTodo
 } = require('../../config/db.mjs');
 
-router.get('/', async (_, res) => {
+router.get('/', auth, async (_, res) => {
   const todos = await getTodos();
 
   res.status(200).json(todos);
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', auth, check_id, async (req, res) => {
   const id = req.params.id;
   const todo = await getTodo(id);
 
@@ -24,7 +26,7 @@ router.get('/:id', async (req, res) => {
     res.status(200).json(todo);
 });
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
   const { title, description, due_time, user_id, status } = req.body;
   try {
     const todo = await addTodo(title, description, due_time, user_id, status)
@@ -38,7 +40,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
   const id = req.params.id;
   const result = await getTodo(id);
 
