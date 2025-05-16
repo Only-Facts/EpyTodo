@@ -11,7 +11,8 @@ router.post('/register', async (req, res) => {
   const { email, name, firstname, password } = req.body;
   try {
     await addUser(email, password, name, firstname)
-    const token = jwt.sign({ "email": email, "password": hash(password) }, process.env.SECRET)
+    const user = await getUser(email);
+    const token = jwt.sign({ "email": email, "password": await hash(password), "id": user.id }, process.env.SECRET)
     res.status(201).send({ "token": token })
   } catch (error) {
     console.error(`${error}`);
@@ -30,7 +31,7 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ "msg": "Invalid Credentials" })
     }
     if (await hash(password) == user.password) {
-      const token = jwt.sign({ "email": email, "password": await hash(password) }, process.env.SECRET);
+      const token = jwt.sign({ "email": email, "password": await hash(password), "id": user.id }, process.env.SECRET);
       res.status(200).json({ "token": token });
     } else {
       res.status(400).json({ "msg": "Invalid Credentials" })
