@@ -1,14 +1,15 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../../middleware/auth.js');
 
 const {
   getUser,
   deleteUser
 } = require('../../config/db.mjs');
 
-router.get('/:id', async (req, res) => {
-  const id = req.params.id;
-  const user = await getUser(id);
+router.get('/:value', auth, async (req, res) => {
+  const value = req.params.value;
+  const user = await getUser(value);
 
   if (user == undefined)
     res.status(400).send({ "msg": "Not found" });
@@ -16,7 +17,7 @@ router.get('/:id', async (req, res) => {
     res.status(200).send(user)
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', auth, (req, res) => {
   const id = req.id;
 
   res.status(200).json({
@@ -24,7 +25,7 @@ router.put('/:id', (req, res) => {
   });
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
   const id = req.params.id;
   const result = await getUser(id);
 
