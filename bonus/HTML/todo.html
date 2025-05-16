@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Todos</title>
+</head>
+<body>
+  <h1>User Todos</h1>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Created At</th>
+        <th>Due Time</th>
+        <th>User ID</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="todo-body">
+      <!-- Rows will be inserted here -->
+    </tbody>
+  </table>
+
+  <script>
+    async function loadTodos() {
+      try {
+        const token = sessionStorage.getItem('jwt');
+
+        if (!token) {
+          alert("Aucun token trouvé. Merci de vous connecter.");
+          window.location.href = "login.html";
+        }
+        const response = await fetch('http://localhost:8080/user/todos', {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + token
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Erreur HTTP: ' + response.status);
+        }
+
+        const todos = await response.json();
+        const tbody = document.getElementById('todo-body');
+
+        todos.forEach(todo => {
+          const row = document.createElement('tr');
+
+          row.innerHTML = `
+            <td>${todo.id}</td>
+            <td>${todo.title}</td>
+            <td>${todo.description}</td>
+            <td>${todo.created_at}</td>
+            <td>${todo.due_time}</td>
+            <td>${todo.user_id}</td>
+            <td>${todo.status}</td>
+          `;
+
+          tbody.appendChild(row);
+        });
+      } catch (err) {
+        console.error('Erreur lors du chargement des todos :', err);
+        document.body.innerHTML += `<p style="color:red;">Erreur : ${err.message}</p>`;
+      }
+    }
+
+    loadTodos();
+  </script>
+</body>
+</html>
+
