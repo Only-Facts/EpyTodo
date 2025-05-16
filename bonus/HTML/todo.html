@@ -37,6 +37,35 @@
   </table>
 
   <script>
+    async function deleteTodo(id) {
+      const token = sessionStorage.getItem('jwt');
+      if (!token) {
+          alert("No Token Found. You may login first.");
+          window.location.href = "login.html";
+      }
+
+      const confirmed = confirm("Do you really want to delete this todo ?");
+      if (!confirmed) return;
+
+      try {
+        const response = await fetch(`http://localhost:8080/todos/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': 'Bearer ' + token
+          }
+        });
+
+        if (response.ok) {
+          alert("Todo deleted !");
+          location.reload();
+        } else {
+          alert("Failed to delete todo (code " + response.status + ")");
+        }
+      } catch (err) {
+        console.error("Error while deleting :", err)
+      }
+    }
+
     async function loadTodos() {
       try {
         const token = sessionStorage.getItem('jwt');
@@ -68,8 +97,13 @@
             <td>${todo.due_time}</td>
             <td>${todo.status}</td>
           `;
+          const button = document.createElement('div');
+          button.innerHTML = `
+            <button onclick="deleteTodo(${todo.id})">Delete</button>
+          `;
 
           tbody.appendChild(row);
+          tbody.appendChild(button);
         });
       } catch (err) {
         console.error('Error while loading todos :', err);

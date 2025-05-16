@@ -60,10 +60,17 @@ h1 {
 table {
   width: 90%;
   margin: 20px auto;
-  background-color: #f4f4f4;
+  background-color: #00a0f0;
+}
+
+button {
+  justify-content: center;
+  background-color: #ff2222;
+  color: #ffffff;
 }
 
 th, td {
+  background-color: #f4f4f4;
   padding: 12px 15px;
   text-align: left;
 }
